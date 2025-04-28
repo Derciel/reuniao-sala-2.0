@@ -10,14 +10,13 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Para pegar o caminho corretamente (Node ES modules)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.use(cors());
 app.use(express.json());
 
-// ✅ Servindo o frontend (HTML, JS, CSS):
+// ✅ Servindo o frontend (agenda) automaticamente:
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 🟢 Endpoint para listar reuniões:
@@ -46,10 +45,10 @@ app.post('/api/meetings', async (req, res) => {
   }
 });
 
-// ✅ Rota GET / só pra testar se o backend está online:
-app.get('/', (req, res) => {
-  res.send('✅ Backend da Sala de Reunião rodando!');
-});
+// ✅ Remove a rota GET / antiga!
+// app.get('/', (req, res) => {
+//   res.send('✅ Backend da Sala de Reunião rodando!');
+// });
 
 app.listen(port, () => {
   console.log(`🚀 Servidor rodando na porta ${port}`);
