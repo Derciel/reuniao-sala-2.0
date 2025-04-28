@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
   calendar.render();
 });
 
-// Adicionar reunião
+// ✅ Adicionar reunião (POST para /api/meetings)
 form.addEventListener('submit', function (e) {
   e.preventDefault();
 
@@ -39,7 +39,6 @@ form.addEventListener('submit', function (e) {
     return;
   }
 
-  // 🚩 Usando caminho relativo para o mesmo backend onde o site está rodando:
   axios.post('/api/meetings', {
     title,
     start,
@@ -57,7 +56,7 @@ form.addEventListener('submit', function (e) {
   });
 });
 
-// Mensagem de feedback
+// ✅ Exibe mensagem de sucesso ou erro
 function showMessage(message, type) {
   messageDiv.textContent = message;
   messageDiv.className = `alert alert-${type} mt-3`;
@@ -68,13 +67,13 @@ function showMessage(message, type) {
   }, 5000);
 }
 
-// Carregar eventos (reuniões)
+// ✅ Carrega as reuniões para o calendário (GET /meetings)
 function fetchMeetings(info, successCallback, failureCallback) {
-  axios.get('/meetings')  // Caminho correto, relativo ao backend que serve os arquivos
+  axios.get('/meetings')
     .then(response => {
       let meetings = response.data;
 
-      // Filtra por sala
+      // Filtra por sala (checkbox)
       meetings = meetings.filter(meeting => {
         if (meeting.roomId === 1 && filterSala1.checked) return true;
         if (meeting.roomId === 2 && filterSala2.checked) return true;
@@ -96,6 +95,6 @@ function fetchMeetings(info, successCallback, failureCallback) {
     });
 }
 
-// Atualiza o calendário ao mudar filtros
+// ✅ Atualiza os eventos ao mudar os filtros de sala
 filterSala1.addEventListener('change', () => calendar.refetchEvents());
 filterSala2.addEventListener('change', () => calendar.refetchEvents());
