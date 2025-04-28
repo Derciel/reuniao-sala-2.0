@@ -80,10 +80,11 @@ function fetchMeetings(info, successCallback, failureCallback) {
         return false;
       });
 
+      // Aqui está o ajuste no formato que o FullCalendar entende:
       const events = meetings.map(meeting => ({
         title: meeting.title,
-        start: meeting.start,
-        end: meeting.end,
+        start: new Date(meeting.start).toISOString(),  // Garante formato correto
+        end: new Date(meeting.end).toISOString(),      // Garante formato correto
         color: meeting.roomId === 1 ? '#28a745' : '#007bff'
       }));
 
