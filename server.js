@@ -22,8 +22,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 🟢 Endpoint para listar reuniões:
 app.get('/meetings', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM meetings ORDER BY "start"');
-    res.json(result.rows);
+    const result = await pool.query(`
+        SELECT 
+          id, 
+          title, 
+          "start", 
+          "end", 
+          roomid AS "roomId"
+        FROM meetings
+        ORDER BY "start"
+      `);
+      res.json(result.rows);      
   } catch (error) {
     console.error('Erro ao buscar reuniões:', error);
     res.status(500).send('Erro ao buscar reuniões');
