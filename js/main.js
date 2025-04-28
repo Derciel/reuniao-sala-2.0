@@ -39,7 +39,7 @@ form.addEventListener('submit', function (e) {
     return;
   }
 
-  axios.post('https://agendador-reuniao-nicopel.onrender.com/', {
+  axios.post('https://reuniao-sala-2-0.onrender.com/', {
     title,
     start,
     end,
@@ -69,7 +69,7 @@ function showMessage(message, type) {
 
 // Carregar eventos (reuniões)
 function fetchMeetings(info, successCallback, failureCallback) {
-  axios.get('https://agendador-reuniao-nicopel.onrender.com/meetings')
+  axios.get('https://reuniao-sala-2-0.onrender.com//meetings')
     .then(response => {
       let meetings = response.data;
 
