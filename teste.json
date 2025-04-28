@@ -1,0 +1,47 @@
+{
+    "info": {
+      "name": "Sala de Reunião Backend",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Listar reuniões (GET /meetings)",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:3000/meetings",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000",
+            "path": ["meetings"]
+          }
+        }
+      },
+      {
+        "name": "Adicionar reunião (POST /)",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "name": "Content-Type",
+              "value": "application/json",
+              "type": "text"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"title\": \"Reunião de Teste\",\n    \"start\": \"2025-05-01T14:00:00\",\n    \"end\": \"2025-05-01T15:00:00\",\n    \"roomId\": 1\n}"
+          },
+          "url": {
+            "raw": "http://localhost:3000/",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "3000"
+          }
+        }
+      }
+    ]
+  }
+  

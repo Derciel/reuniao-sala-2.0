@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: sala-reuniao-backend
+    env: node
+    plan: free                # Ou starter, standard, etc.
+    buildCommand: |
+      npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 18             # (Pode usar 20 também, mas 18 é bem estável)
+      - key: DATABASE_URL
+        value: "postgresql://neondb_owner:npg_ueUdw6p2vYgD@ep-shiny-snowflake-ac5jqtms-pooler.sa-east-1.aws.neon.tech/neondb?sslmode=require"
+    autoDeploy: true
