@@ -39,7 +39,8 @@ form.addEventListener('submit', function (e) {
     return;
   }
 
-  axios.post('https://reuniao-sala-2-0.onrender.com/', {
+  // 🚩 Usando caminho relativo para o mesmo backend onde o site está rodando:
+  axios.post('/api/meetings', {
     title,
     start,
     end,
@@ -69,7 +70,7 @@ function showMessage(message, type) {
 
 // Carregar eventos (reuniões)
 function fetchMeetings(info, successCallback, failureCallback) {
-  axios.get('https://reuniao-sala-2-0.onrender.com//meetings')
+  axios.get('/meetings')  // Caminho correto, relativo ao backend que serve os arquivos
     .then(response => {
       let meetings = response.data;
 
