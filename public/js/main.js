@@ -16,11 +16,24 @@ document.addEventListener('DOMContentLoaded', function () {
       right: 'dayGridMonth,timeGridWeek,timeGridDay'
     },
     events: fetchMeetings,
+    eventClick: function(info) {
+      const evento = info.event;
+      const title = evento.title;
+      const start = evento.start.toLocaleString('pt-BR');
+      const end = evento.end ? evento.end.toLocaleString('pt-BR') : '';
+
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalStart').textContent = start;
+      document.getElementById('modalEnd').textContent = end;
+
+      const myModal = new bootstrap.Modal(document.getElementById('meetingModal'));
+      myModal.show();
+    }
   });
   calendar.render();
 });
 
-// ✅ Adicionar reunião (POST para /api/meetings)
+// Adicionar reunião
 form.addEventListener('submit', function (e) {
   e.preventDefault();
 
@@ -39,24 +52,19 @@ form.addEventListener('submit', function (e) {
     return;
   }
 
-  axios.post('/api/meetings', {
-    title,
-    start,
-    end,
-    roomId
-  })
-  .then(response => {
-    showMessage('Reunião adicionada com sucesso!', 'success');
-    this.reset();
-    calendar.refetchEvents();
-  })
-  .catch(error => {
-    console.error(error);
-    showMessage('Erro ao adicionar reunião.', 'danger');
-  });
+  axios.post('/api/meetings', { title, start, end, roomId })
+    .then(response => {
+      showMessage('Reunião adicionada com sucesso!', 'success');
+      this.reset();
+      calendar.refetchEvents();
+    })
+    .catch(error => {
+      console.error(error);
+      showMessage('Erro ao adicionar reunião.', 'danger');
+    });
 });
 
-// ✅ Exibe mensagem de sucesso ou erro
+// Mostrar mensagens
 function showMessage(message, type) {
   messageDiv.textContent = message;
   messageDiv.className = `alert alert-${type} mt-3`;
@@ -67,25 +75,23 @@ function showMessage(message, type) {
   }, 5000);
 }
 
-// ✅ Carrega as reuniões para o calendário (GET /meetings)
+// Buscar reuniões
 function fetchMeetings(info, successCallback, failureCallback) {
   axios.get('/meetings')
     .then(response => {
       let meetings = response.data;
 
-      // Filtra por sala (checkbox)
       meetings = meetings.filter(meeting => {
         if (meeting.roomId === 1 && filterSala1.checked) return true;
         if (meeting.roomId === 2 && filterSala2.checked) return true;
         return false;
       });
 
-      // Aqui está o ajuste no formato que o FullCalendar entende:
       const events = meetings.map(meeting => ({
         title: meeting.title,
         start: meeting.start,
         end: meeting.end,
-        color: meeting.roomid === 1 ? '#28a745' : '#007bff'  // Verde ou azul dependendo da sala
+        color: meeting.roomId === 1 ? '#28a745' : '#007bff'
       }));
 
       successCallback(events);
@@ -96,6 +102,5 @@ function fetchMeetings(info, successCallback, failureCallback) {
     });
 }
 
-// ✅ Atualiza os eventos ao mudar os filtros de sala
 filterSala1.addEventListener('change', () => calendar.refetchEvents());
 filterSala2.addEventListener('change', () => calendar.refetchEvents());
