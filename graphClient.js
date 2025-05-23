@@ -1,6 +1,5 @@
 import { ConfidentialClientApplication } from '@azure/msal-node';
 import { Client } from '@microsoft/microsoft-graph-client';
-import 'isomorphic-fetch';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -17,14 +16,10 @@ const cca = new ConfidentialClientApplication(msalConfig);
 
 export async function getGraphClient() {
   const tokenResponse = await cca.acquireTokenByClientCredential({
-    scopes: ['https://graph.microsoft.com/.default'],
+    scopes: [process.env.GRAPH_SCOPE || 'https://graph.microsoft.com/.default'],
   });
 
-  const client = Client.init({
-    authProvider: (done) => {
-      done(null, tokenResponse.accessToken);
-    },
+  return Client.init({
+    authProvider: (done) => done(null, tokenResponse.accessToken),
   });
-
-  return client;
 }
