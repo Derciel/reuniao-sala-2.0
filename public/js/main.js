@@ -21,10 +21,18 @@ document.addEventListener('DOMContentLoaded', function () {
       const title = evento.title;
       const start = evento.start.toLocaleString('pt-BR');
       const end = evento.end ? evento.end.toLocaleString('pt-BR') : '';
+      const joinUrl = evento.extendedProps.joinUrl;
 
       document.getElementById('modalTitle').textContent = title;
       document.getElementById('modalStart').textContent = start;
       document.getElementById('modalEnd').textContent = end;
+
+      const linkContainer = document.getElementById('modalJoinUrl');
+      if (joinUrl) {
+        linkContainer.innerHTML = `<a href="${joinUrl}" target="_blank" class="btn btn-success">Participar via Teams</a>`;
+      } else {
+        linkContainer.innerHTML = `<span class="text-muted">Sem link do Teams</span>`;
+      }
 
       const myModal = new bootstrap.Modal(document.getElementById('meetingModal'));
       myModal.show();
@@ -55,7 +63,7 @@ form.addEventListener('submit', function (e) {
   axios.post('/api/meetings', { title, start, end, roomId })
     .then(response => {
       showMessage('Reunião adicionada com sucesso!', 'success');
-      this.reset();
+      form.reset();
       calendar.refetchEvents();
     })
     .catch(error => {
@@ -91,7 +99,10 @@ function fetchMeetings(info, successCallback, failureCallback) {
         title: meeting.title,
         start: meeting.start,
         end: meeting.end,
-        color: meeting.roomId === 1 ? '#28a745' : '#007bff'
+        color: meeting.roomId === 1 ? '#28a745' : '#007bff',
+        extendedProps: {
+          joinUrl: meeting.joinUrl  // ✅ Adiciona o link no evento
+        }
       }));
 
       successCallback(events);
